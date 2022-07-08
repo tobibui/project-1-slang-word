@@ -13,6 +13,18 @@ public class Main {
     static List<Pair> history = new ArrayList<Pair>();
     static List<Pair> listSorted = new ArrayList<Pair>();
 
+    private static void handleSearchSlangWord() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Nhập slang word: ");
+        String slang = scanner.next();
+        Pair pair = slangKey.get(slang);
+        if (pair == null) {
+            System.out.println("Không có từ này!");
+        } else {
+            System.out.println(pair.word + " nghĩa là: " + pair.meaning);
+            history.add(pair);
+        }
+    }
     public static void main(String[] args) throws IOException {
         String filename="slang.txt";
 
@@ -38,6 +50,7 @@ public class Main {
             choose = scanner.nextInt();
 
             switch (choose) {
+                case 1 -> handleSearchSlangWord();
             }
             System.out.println("Nhấn Enter để tiếp tục!");
             try {
