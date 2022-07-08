@@ -25,6 +25,20 @@ public class Main {
             history.add(pair);
         }
     }
+    private static void handleSearchDefinition() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Nhập meaning word: ");
+        String meaning = scanner.nextLine();
+        Set<String> keys = slangKey.keySet();
+        for (String key : keys) {
+            Pair pair = slangKey.get(key);
+            if (pair.meaning.equals(meaning)) {
+                System.out.println(key + ": " + pair.meaning);
+                history.add(pair);
+            }
+        }
+    }
+
     public static void main(String[] args) throws IOException {
         String filename="slang.txt";
 
@@ -51,6 +65,7 @@ public class Main {
 
             switch (choose) {
                 case 1 -> handleSearchSlangWord();
+                case 2 -> handleSearchDefinition();
             }
             System.out.println("Nhấn Enter để tiếp tục!");
             try {
