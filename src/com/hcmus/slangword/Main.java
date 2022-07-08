@@ -39,6 +39,12 @@ public class Main {
         }
     }
 
+    private static void handleHistory() {
+        System.out.println("Lịch sử slang word đã tìm kiếm:");
+        for (Pair pair : history) {
+            System.out.println(pair.word + ": " + pair.meaning);
+        }
+    }
     public static void main(String[] args) throws IOException {
         String filename="slang.txt";
 
@@ -66,6 +72,7 @@ public class Main {
             switch (choose) {
                 case 1 -> handleSearchSlangWord();
                 case 2 -> handleSearchDefinition();
+                case 3 -> handleHistory();
             }
             System.out.println("Nhấn Enter để tiếp tục!");
             try {
