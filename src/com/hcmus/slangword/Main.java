@@ -107,6 +107,16 @@ public class Main {
         }
     }
 
+    private static void handleRandom() {
+        System.out.print("Kết quả random => ");
+        Set<String> keys = slangKey.keySet();
+        int index = (int) (Math.random() * keys.size());
+        String key = (String) keys.toArray()[index];
+        Pair pair = slangKey.get(key);
+        System.out.println(pair.word + ": " + pair.meaning);
+        history.add(pair);
+    }
+
     public static void main(String[] args) throws IOException {
         String filename="slang.txt";
 
@@ -139,6 +149,7 @@ public class Main {
                 case 5 -> handleEditWord();
                 case 6 -> handleDeleteWord();
                 case 7 -> handleReset();
+                case 8 -> handleRandom();
 
             }
             System.out.println("Nhấn Enter để tiếp tục!");
