@@ -95,6 +95,18 @@ public class Main {
         }
     }
 
+    private static void handleReset() {
+        try {
+            slangKey.clear();
+            history.clear();
+            listSorted.clear();
+            loadData("slang.txt");
+            System.out.println("Reset thành công");
+        }  catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
     public static void main(String[] args) throws IOException {
         String filename="slang.txt";
 
@@ -126,6 +138,7 @@ public class Main {
                 case 4 -> handleAddWord();
                 case 5 -> handleEditWord();
                 case 6 -> handleDeleteWord();
+                case 7 -> handleReset();
 
             }
             System.out.println("Nhấn Enter để tiếp tục!");
