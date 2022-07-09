@@ -45,6 +45,21 @@ public class Main {
             System.out.println(pair.word + ": " + pair.meaning);
         }
     }
+
+    private static void handleAddWord() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Nhập slang word: ");
+        String slang = scanner.next();
+        scanner = new Scanner(System.in);
+        System.out.print("Nhập meaning word: ");
+        String meaning = scanner.nextLine();
+        Pair pair = new Pair();
+        pair.word = slang;
+        pair.meaning = meaning;
+        slangKey.put(slang, pair);
+        listSorted.add(pair);
+        System.out.println("Thêm thành công");
+    }
     public static void main(String[] args) throws IOException {
         String filename="slang.txt";
 
@@ -73,6 +88,7 @@ public class Main {
                 case 1 -> handleSearchSlangWord();
                 case 2 -> handleSearchDefinition();
                 case 3 -> handleHistory();
+                case 4 -> handleAddWord();
             }
             System.out.println("Nhấn Enter để tiếp tục!");
             try {
