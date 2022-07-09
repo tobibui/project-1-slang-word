@@ -3,26 +3,49 @@ package com.hcmus.slangword;
 import java.io.*;
 import java.util.*;
 
-class Pair {
+class Dictionary {
     public String word;
     public String meaning;
 }
 
 public class Main {
-    static HashMap<String, Pair> slangKey = new HashMap<String, Pair>();
-    static List<Pair> history = new ArrayList<Pair>();
-    static List<Pair> listSorted = new ArrayList<Pair>();
+    static HashMap<String, Dictionary> slangKey = new HashMap<String, Dictionary>();
+    static List<Dictionary> historySearch = new ArrayList<Dictionary>();
+    public static void loadData(String filename) throws IOException {
+        FileInputStream readFile = new FileInputStream(filename);
+        BufferedReader fileData = new BufferedReader(new InputStreamReader(readFile));
+        for (int i = 0; fileData.readLine() != null; i++) {
+            String dataRead = fileData.readLine();
+            String[] parts = dataRead.split("`");
+            Dictionary dict = new Dictionary();
+            try {
+                dict.word = parts[0];
+                dict.meaning = parts[1];
+                slangKey.put(dict.word, dict);
+            } catch (Exception e) {
+            }
+        }
+        readFile.close();
+    }
+
+    public static Dictionary randomWord() {
+        Set<String> keys = slangKey.keySet();
+        int index = (int) (Math.random() * keys.size());
+        String key = (String) keys.toArray()[index];
+        Dictionary dict = slangKey.get(key);
+        return dict;
+    }
 
     private static void handleSearchSlangWord() {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Nhập slang word: ");
         String slang = scanner.next();
-        Pair pair = slangKey.get(slang);
-        if (pair == null) {
+        Dictionary dict = slangKey.get(slang);
+        if (dict == null) {
             System.out.println("Không có từ này!");
         } else {
-            System.out.println(pair.word + " nghĩa là: " + pair.meaning);
-            history.add(pair);
+            System.out.println(dict.word + " nghĩa là: " + dict.meaning);
+            historySearch.add(dict);
         }
     }
     private static void handleSearchDefinition() {
@@ -31,18 +54,18 @@ public class Main {
         String meaning = scanner.nextLine();
         Set<String> keys = slangKey.keySet();
         for (String key : keys) {
-            Pair pair = slangKey.get(key);
-            if (pair.meaning.equals(meaning)) {
-                System.out.println(key + ": " + pair.meaning);
-                history.add(pair);
+            Dictionary dict = slangKey.get(key);
+            if (dict.meaning.equals(meaning)) {
+                System.out.println(key + ": " + dict.meaning);
+                historySearch.add(dict);
             }
         }
     }
 
     private static void handleHistory() {
         System.out.println("Lịch sử slang word đã tìm kiếm:");
-        for (Pair pair : history) {
-            System.out.println(pair.word + ": " + pair.meaning);
+        for (Dictionary dict : historySearch) {
+            System.out.println(dict.word + ": " + dict.meaning);
         }
     }
 
@@ -53,11 +76,10 @@ public class Main {
         scanner = new Scanner(System.in);
         System.out.print("Nhập meaning word: ");
         String meaning = scanner.nextLine();
-        Pair pair = new Pair();
-        pair.word = slang;
-        pair.meaning = meaning;
-        slangKey.put(slang, pair);
-        listSorted.add(pair);
+        Dictionary dict = new Dictionary();
+        dict.word = slang;
+        dict.meaning = meaning;
+        slangKey.put(slang, dict);
         System.out.println("Thêm thành công");
     }
 
@@ -65,14 +87,14 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Nhập slang word: ");
         String slang = scanner.next();
-        Pair pair = slangKey.get(slang);
-        if (pair == null) {
+        Dictionary dict = slangKey.get(slang);
+        if (dict == null) {
             System.out.println("Không có từ này");
         } else {
             System.out.print("Nhập meaning word: ");
             scanner = new Scanner(System.in);
             String meaning = scanner.nextLine();
-            pair.meaning = meaning;
+            dict.meaning = meaning;
             System.out.println("Chỉnh sửa thành công");
         }
     }
@@ -81,15 +103,14 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Nhập slang word cần xoá: ");
         String slang = scanner.next();
-        Pair pair = slangKey.get(slang);
-        if (pair == null) {
+        Dictionary dict = slangKey.get(slang);
+        if (dict == null) {
             System.out.println("Không có từ này");
         } else {
             System.out.print("Bạn thật sự muốn xoá? (y/n): ");
             String confirm = scanner.next();
             if (confirm.equals("y")) {
                 slangKey.remove(slang);
-                listSorted.remove(pair);
                 System.out.println("Xoá thành công");
             }
         }
@@ -98,8 +119,7 @@ public class Main {
     private static void handleReset() {
         try {
             slangKey.clear();
-            history.clear();
-            listSorted.clear();
+            historySearch.clear();
             loadData("slang.txt");
             System.out.println("Reset thành công");
         }  catch (Exception e) {
@@ -112,22 +132,22 @@ public class Main {
         Set<String> keys = slangKey.keySet();
         int index = (int) (Math.random() * keys.size());
         String key = (String) keys.toArray()[index];
-        Pair pair = slangKey.get(key);
-        System.out.println(pair.word + ": " + pair.meaning);
-        history.add(pair);
+        Dictionary dict = slangKey.get(key);
+        System.out.println(dict.word + ": " + dict.meaning);
+        historySearch.add(dict);
     }
     private static void handleMiniGame() {
         Scanner scanner = new Scanner(System.in);
         Set<String> keys = slangKey.keySet();
         int index = (int) (Math.random() * keys.size());
         String key = (String) keys.toArray()[index];
-        Pair pair = slangKey.get(key);
-        System.out.println("Slang: " + pair.word);
+        Dictionary dict = slangKey.get(key);
+        System.out.println("Slang: " + dict.word);
         System.out.println("Meaning: ");
         int rightAnswer = index % 4;
         for (int i = 0; i < 4; i++) {
             if (i == rightAnswer) {
-                System.out.println(i + ". " + pair.meaning);
+                System.out.println(i + ". " + dict.meaning);
             } else {
                 System.out.println(i + ". " + randomWord().meaning);
             }
@@ -147,12 +167,12 @@ public class Main {
         Set<String> keys = slangKey.keySet();
         int index = (int) (Math.random() * keys.size());
         String key = (String) keys.toArray()[index];
-        Pair pair = slangKey.get(key);
-        System.out.println("Meaning: " + pair.meaning + " Slang là gì?: ");
+        Dictionary dict = slangKey.get(key);
+        System.out.println("Meaning: " + dict.meaning + " Slang là gì?: ");
         int rightAnswer = index % 4;
         for (int i = 0; i < 4; i++) {
             if (i == rightAnswer) {
-                System.out.println(i + ". " + pair.word);
+                System.out.println(i + ". " + dict.word);
             } else {
                 System.out.println(i + ". " + randomWord().word);
             }
@@ -207,32 +227,5 @@ public class Main {
             } catch (Exception e) {
             }
         }
-
-    }
-
-    public static void loadData(String filename) throws IOException {
-        FileInputStream readFile = new FileInputStream(filename);
-        BufferedReader fileData = new BufferedReader(new InputStreamReader(readFile));
-        for (int i = 0; fileData.readLine() != null; i++) {
-            String dataRead = fileData.readLine();
-            String[] parts = dataRead.split("`");
-            Pair pair = new Pair();
-            try {
-                pair.word = parts[0];
-                pair.meaning = parts[1];
-                slangKey.put(pair.word, pair);
-                listSorted.add(pair);
-            } catch (Exception e) {
-            }
-        }
-        readFile.close();
-    }
-
-    public static Pair randomWord() {
-        Set<String> keys = slangKey.keySet();
-        int index = (int) (Math.random() * keys.size());
-        String key = (String) keys.toArray()[index];
-        Pair pair = slangKey.get(key);
-        return pair;
     }
 }
