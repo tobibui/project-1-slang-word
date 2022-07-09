@@ -60,6 +60,23 @@ public class Main {
         listSorted.add(pair);
         System.out.println("Thêm thành công");
     }
+
+    private static void handleEditWord() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Nhập slang word: ");
+        String slang = scanner.next();
+        Pair pair = slangKey.get(slang);
+        if (pair == null) {
+            System.out.println("Không có từ này");
+        } else {
+            System.out.print("Nhập meaning word: ");
+            scanner = new Scanner(System.in);
+            String meaning = scanner.nextLine();
+            pair.meaning = meaning;
+            System.out.println("Chỉnh sửa thành công");
+        }
+    }
+
     public static void main(String[] args) throws IOException {
         String filename="slang.txt";
 
@@ -89,6 +106,7 @@ public class Main {
                 case 2 -> handleSearchDefinition();
                 case 3 -> handleHistory();
                 case 4 -> handleAddWord();
+                case 5 -> handleEditWord();
             }
             System.out.println("Nhấn Enter để tiếp tục!");
             try {
