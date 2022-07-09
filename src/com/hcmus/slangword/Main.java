@@ -142,6 +142,29 @@ public class Main {
         }
     }
 
+    private static void handleDefinitionMiniGame() {
+        Scanner scanner = new Scanner(System.in);
+        Set<String> keys = slangKey.keySet();
+        int index = (int) (Math.random() * keys.size());
+        String key = (String) keys.toArray()[index];
+        Pair pair = slangKey.get(key);
+        System.out.println("Meaning: " + pair.meaning + " Slang là gì?: ");
+        int rightAnswer = index % 4;
+        for (int i = 0; i < 4; i++) {
+            if (i == rightAnswer) {
+                System.out.println(i + ". " + pair.word);
+            } else {
+                System.out.println(i + ". " + randomWord().word);
+            }
+        }
+        System.out.print("Trả lời: ");
+        int answer = scanner.nextInt();
+        if (answer == rightAnswer) {
+            System.out.println("Chính xác!!!!");
+        } else {
+            System.out.println("Toang! sai rồi");
+        }
+    }
     public static void main(String[] args) throws IOException {
         String filename="slang.txt";
 
@@ -176,7 +199,7 @@ public class Main {
                 case 7 -> handleReset();
                 case 8 -> handleRandom();
                 case 9 -> handleMiniGame();
-
+                case 10 -> handleDefinitionMiniGame();
             }
             System.out.println("Nhấn Enter để tiếp tục!");
             try {
